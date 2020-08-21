@@ -1,10 +1,12 @@
 const { src, dest, series, parallel } = require('gulp');
 const gulpSass = require('gulp-sass'); 
+const cssnano = require('gulp-cssnano'); 
 
 function sass(){
   return src('./src/css/style.scss', { allowEmpty: true })
-      .pipe(gulpSass())     
-      .pipe(dest('./publish/css'));
+      .pipe(gulpSass()) // process sass 
+      .pipe(cssnano()) // then minimize the css
+      .pipe(dest('./publish/css')); // then copy to this location
 }
 
 function copyStatic() {
