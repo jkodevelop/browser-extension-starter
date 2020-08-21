@@ -1,7 +1,12 @@
-function defaultTask(cb) {
-  // place code for your default task here
-  console.log('Hello Gulp');
-  cb(); // tells gulp you are done
+const { src, dest, series } = require('gulp');
+
+function copyStatic() {
+    return src('./src/static/index.html', { allowEmpty: true }) 
+        .pipe(dest('./publish'));
 }
 
-exports.default = defaultTask
+const build = series(copyStatic);
+
+exports.build = build;
+
+exports.default = build;
