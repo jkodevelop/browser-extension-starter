@@ -1,0 +1,18 @@
+{
+  "name": "webext-gulp",
+  "version": "1.0.0",
+  "description": "this is tutorial for creating a web-extension with help from gulp",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [
+    "web-extension",
+    "gulp",
+    "tutorial",
+    "start"
+  ],
+  "author": "Jason Ko",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  }
+}
