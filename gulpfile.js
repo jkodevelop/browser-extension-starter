@@ -1,4 +1,4 @@
-const { src, dest, series, parallel } = require('gulp');
+const { src, dest, series, parallel, watch } = require('gulp');
 const gulpSass = require('gulp-sass'); 
 const cssnano = require('gulp-cssnano'); 
 const gulpRename = require('gulp-rename');
@@ -40,14 +40,22 @@ function copyStatic() {
       .pipe(dest('./publish'));
 }
 
-
 const build = series(parallel(sass, js, copyStatic));
+
+function watchActivities() {
+  build();
+  watch('./src/css/style.scss', sass);
+  watch('./src/js/index.js', { delay: 750 }, js); // wait 750ms later before running the task js()
+  watch('./src/static/index.html', copyStatic);
+}
 
 
 // this allows you to just run sass in command line
 exports.sass = sass; // $ gulp sass
 exports.js = js; // $ gulp js
+exports.copyStatic = copyStatic; // $ gulp copyStatic
 
 exports.build = build;
+exports.watchActivities = watchActivities;
 
-exports.default = build;
+exports.default = watchActivities;
