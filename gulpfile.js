@@ -5,15 +5,22 @@ const gulpRename = require('gulp-rename');
 const gulpBrowserify = require('gulp-browserify');
 const gulpBabel = require('gulp-babel');
 const gulpUglify = require('gulp-uglify');
-
+const gulpSourcemap = require('gulp-sourcemaps');
 
 function js(){
   return src('./src/js/index.js', { allowEmpty: true })
+      .pipe(gulpSourcemap.init())
       .pipe(gulpBrowserify())
       .pipe(gulpBabel({
         presets: ['@babel/env']
       })) // babel process bundle
       .pipe(gulpUglify())
+      .pipe(gulpSourcemap.write('.', {
+        mapFile: function(mapFilePath) {
+          // source map files are named *.map instead of *.js.map
+          return mapFilePath.replace('index.js.map', 'script.min.map');
+        }
+      }))
       .pipe(gulpRename({
         basename: 'script',
         suffix: '.min'
