@@ -2,9 +2,11 @@ const { src, dest, series, parallel } = require('gulp');
 const gulpSass = require('gulp-sass'); 
 const cssnano = require('gulp-cssnano'); 
 const gulpRename = require('gulp-rename');
+const gulpBrowserify = require('gulp-browserify');
 
 function js(){
   return src('./src/js/index.js', { allowEmpty: true })
+      .pipe(gulpBrowserify())
       .pipe(gulpRename({
         basename: 'script',
         suffix: '.min'
