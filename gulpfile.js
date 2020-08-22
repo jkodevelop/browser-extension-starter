@@ -3,10 +3,14 @@ const gulpSass = require('gulp-sass');
 const cssnano = require('gulp-cssnano'); 
 const gulpRename = require('gulp-rename');
 const gulpBrowserify = require('gulp-browserify');
+const gulpBabel = require('gulp-babel');
 
 function js(){
   return src('./src/js/index.js', { allowEmpty: true })
       .pipe(gulpBrowserify())
+      .pipe(gulpBabel({
+        presets: ['@babel/env']
+      })) // babel process bundle
       .pipe(gulpRename({
         basename: 'script',
         suffix: '.min'
