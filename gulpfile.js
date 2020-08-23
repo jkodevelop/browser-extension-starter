@@ -10,6 +10,13 @@ const gulpConcat = require('gulp-concat');
 
 const browserSync = require('browser-sync').create();
 
+const fsExtra = require('fs-extra');
+
+function clean(done){
+  fsExtra.emptyDirSync('./publish');
+  done();
+}
+
 function js(){
   return src('./src/js/**/*.js', { allowEmpty: true })
       .pipe(gulpSourcemap.init())
@@ -80,9 +87,9 @@ function browserSyncServer(){
   watch('./src/static/**/*', series(copyStatic, reloadServer)); // this is to force a reload on the browser if any new static content is updated
 }
 // dev (gulp task): start by building the files into ./publish folder then run the server
-const dev = series(parallel(sass, js, copyStatic), browserSyncServer);
+const dev = series(clean,parallel(sass, js, copyStatic), browserSyncServer);
 
-const build = series(parallel(sass, js, copyStatic));
+const build = series(clean,parallel(sass, js, copyStatic));
 
 // this allows you to just run sass in command line
 exports.sass = sass; // $ gulp sass
@@ -92,5 +99,7 @@ exports.copyStatic = copyStatic; // $ gulp copyStatic
 exports.build = build;
 exports.watchActivities = watchActivities;
 exports.dev = dev;
+
+exports.clean = clean;
 
 exports.default = watchActivities;
