@@ -5,10 +5,9 @@ https://css-tricks.com/gulp-for-beginners/
 https://gulpjs.com/docs/en/getting-started/watching-files
 
 https://gist.github.com/stsvilik/46bf34f76910fcf515ea00650134190f
+
 https://www.browsersync.io/docs/gulp
+https://wpbeaches.com/getting-browsersync-running-with-gulp-4-and-valet/
+https://github.com/gulpjs/gulp/blob/master/docs/recipes/minimal-browsersync-setup-with-gulp4.md
 
-
-npm install gulp-uglify --save-dev
-const gulpUglify = require('gulp-uglify');
-
-npm i --save-dev gulp-babel @babel/core @babel/preset-env
+// watch('src/*.js', series(clean, javascript));

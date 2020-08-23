@@ -8,6 +8,8 @@ const gulpUglify = require('gulp-uglify');
 const gulpSourcemap = require('gulp-sourcemaps');
 const gulpConcat = require('gulp-concat');
 
+const browserSync = require('browser-sync').create();
+
 function js(){
   return src('./src/js/index.js', { allowEmpty: true })
       .pipe(gulpSourcemap.init())
@@ -43,8 +45,6 @@ function copyStatic() {
       .pipe(dest('./publish'));
 }
 
-const build = series(parallel(sass, js, copyStatic));
-
 function watchActivities() {
   build();
   watch('./src/css/**/*.scss', { delay: 750 }, sass);
@@ -52,6 +52,18 @@ function watchActivities() {
   watch('./src/static/index.html', copyStatic);
 }
 
+function browserSyncServer(){
+  // static server
+  browserSync.init({
+    server: {
+        baseDir: "./publish"
+    }
+  });
+}
+// dev (gulp task): start by building the files into ./publish folder then run the server
+const dev = series(parallel(sass, js, copyStatic), browserSyncServer);
+
+const build = series(parallel(sass, js, copyStatic));
 
 // this allows you to just run sass in command line
 exports.sass = sass; // $ gulp sass
@@ -60,5 +72,6 @@ exports.copyStatic = copyStatic; // $ gulp copyStatic
 
 exports.build = build;
 exports.watchActivities = watchActivities;
+exports.dev = dev;
 
 exports.default = watchActivities;
