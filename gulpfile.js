@@ -52,6 +52,12 @@ function watchActivities() {
   watch('./src/static/index.html', copyStatic);
 }
 
+function sassInject(){
+  // stream data to static server using browser-sync.create().steam()
+  // this allows browser-sync 
+  return sass().pipe(browserSync.stream());
+}
+
 function browserSyncServer(){
   // static server
   browserSync.init({
@@ -59,6 +65,9 @@ function browserSyncServer(){
         baseDir: "./publish"
     }
   });
+
+  // this in essence takes over watchActivities() because it will also inject the data to the browser using browser-sync
+  watch("./src/css/*.scss", { delay: 250 }, sassInject); // watch scss changes, then inject the updated new css file to browser without refresh
 }
 // dev (gulp task): start by building the files into ./publish folder then run the server
 const dev = series(parallel(sass, js, copyStatic), browserSyncServer);
