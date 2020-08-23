@@ -6,6 +6,7 @@ const gulpBrowserify = require('gulp-browserify');
 const gulpBabel = require('gulp-babel');
 const gulpUglify = require('gulp-uglify');
 const gulpSourcemap = require('gulp-sourcemaps');
+const gulpConcat = require('gulp-concat');
 
 function js(){
   return src('./src/js/index.js', { allowEmpty: true })
@@ -29,9 +30,11 @@ function js(){
 }
 
 function sass(){
-  return src('./src/css/style.scss', { allowEmpty: true })
+  return src('./src/css/**/*.scss', { allowEmpty: true })
       .pipe(gulpSass()) // process sass 
       .pipe(cssnano()) // then minimize the css
+      // concat file order by alphabet
+      .pipe(gulpConcat('style.css')) // combine all css to one, name it style.css
       .pipe(dest('./publish/css')); // then copy to this location
 }
 
@@ -44,7 +47,7 @@ const build = series(parallel(sass, js, copyStatic));
 
 function watchActivities() {
   build();
-  watch('./src/css/style.scss', sass);
+  watch('./src/css/**/*.scss', { delay: 750 }, sass);
   watch('./src/js/index.js', { delay: 750 }, js); // wait 750ms later before running the task js()
   watch('./src/static/index.html', copyStatic);
 }
