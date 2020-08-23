@@ -11,7 +11,7 @@ const gulpConcat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
 
 function js(){
-  return src('./src/js/index.js', { allowEmpty: true })
+  return src('./src/js/**/*.js', { allowEmpty: true })
       .pipe(gulpSourcemap.init())
       .pipe(gulpBrowserify())
       .pipe(gulpBabel({
@@ -58,6 +58,10 @@ function sassInject(){
   return sass().pipe(browserSync.stream());
 }
 
+function jsInject(){
+  return js().pipe(browserSync.stream());
+}
+
 function browserSyncServer(){
   // static server
   browserSync.init({
@@ -67,7 +71,9 @@ function browserSyncServer(){
   });
 
   // this in essence takes over watchActivities() because it will also inject the data to the browser using browser-sync
-  watch("./src/css/*.scss", { delay: 250 }, sassInject); // watch scss changes, then inject the updated new css file to browser without refresh
+  watch("./src/css/**/*.scss", { delay: 250 }, sassInject); // watch scss changes, then inject the updated new css file to browser without refresh
+  watch("./src/js/**/*.js", { delay: 250 }, jsInject); // watch scss changes, then inject the updated new css file to browser without refresh
+
 }
 // dev (gulp task): start by building the files into ./publish folder then run the server
 const dev = series(parallel(sass, js, copyStatic), browserSyncServer);
