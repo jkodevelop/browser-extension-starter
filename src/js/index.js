@@ -1,2 +1,3 @@
-const { add } = require('./helpers.js');
-console.log('Hello Gulp!', add(2000,20));
+const { onClick } = require('./helpers.js');
+console.log('Hello Web Extension!');
+document.getElementById('HellWebext').addEventListener('click', onClick, false);

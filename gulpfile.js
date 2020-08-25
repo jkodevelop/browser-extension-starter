@@ -53,7 +53,7 @@ function copyStatic() {
 }
 
 function watchActivities() {
-  build();
+  noCleanBuild();
   watch('./src/css/**/*.scss', { delay: 750 }, sass);
   watch('./src/js/**/*.js', { delay: 750 }, js); // wait 750ms later before running the task js()
   watch('./src/static/**/*', copyStatic);
@@ -90,6 +90,12 @@ function browserSyncServer(){
 const dev = series(clean,parallel(sass, js, copyStatic), browserSyncServer);
 
 const build = series(clean,parallel(sass, js, copyStatic));
+
+// special case for use in watchActivities() 
+// added because web-ext runner for Firefox web-extension development needs ./publish/manifest.json to exist to load
+// if you clean while running web-ext, then firefox won't be able to import and setup the Web Extension
+// $ npm run webext
+const noCleanBuild = parallel(sass, js, copyStatic); 
 
 // this allows you to just run sass in command line
 exports.sass = sass; // $ gulp sass

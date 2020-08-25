@@ -1,4 +1,4 @@
-const add = (x,y) => {
-  return x + y;
-};
-module.exports.add = add;
+function onClick(e) {
+  alert('You Clicked Me!!');
+}
+module.exports.onClick = onClick;

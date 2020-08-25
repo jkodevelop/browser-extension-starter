@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "this is tutorial for creating a web-extension with help from gulp",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dev": "gulp dev",
+    "watch": "gulp watchActivities",
+    "webext": "web-ext run --source-dir=./publish | gulp watchActivities",
+    "webextonly": "web-ext run --source-dir=./publish"
+  },
   "keywords": [
     "web-extension",
     "gulp",
@@ -24,6 +29,7 @@
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
-    "gulp-uglify": "^3.0.2"
+    "gulp-uglify": "^3.0.2",
+    "web-ext": "^5.0.0"
   }
 }
