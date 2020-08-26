@@ -17,8 +17,8 @@ function clean(done){
   done();
 }
 
-function js(){
-  return src('./src/js/**/*.js', { allowEmpty: true })
+function jsTask(pattern, outPath, params){
+  return src(pattern, { allowEmpty: true })
       .pipe(gulpSourcemap.init())
       .pipe(gulpBrowserify())
       .pipe(gulpBabel({
@@ -28,14 +28,31 @@ function js(){
       .pipe(gulpSourcemap.write('.', {
         mapFile: function(mapFilePath) {
           // source map files are named *.map instead of *.js.map
-          return mapFilePath.replace('index.js.map', 'script.min.map');
+          return mapFilePath.replace(params.mapSource, params.mapDest);
         }
       }))
       .pipe(gulpRename({
-        basename: 'script',
-        suffix: '.min'
+        basename: params.renameBasename,
+        suffix: params.renameSuffix
       })) // rename javascript to script.min.js
-      .pipe(dest('./publish/js')); // then copy to this location
+      .pipe(dest(outPath)); // then copy to this location
+}
+
+function browserActionJS(){
+  return jsTask('./src/js/browser_action/**/*.js','./publish/js',{
+    'mapSource': 'index.js.map',
+    'mapDest': 'script.min.map',
+    'renameBasename': 'script',
+    'renameSuffix': '.min'
+  });
+}
+function contentScriptJS(){
+  return jsTask('./src/js/content_scripts/**/*.js','./publish/js',{
+    'mapSource': 'index.js.map',
+    'mapDest': 'contentscript.min.map',
+    'renameBasename': 'contentscript',
+    'renameSuffix': '.min'
+  });
 }
 
 function sass(){
@@ -55,7 +72,8 @@ function copyStatic() {
 function watchActivities() {
   noCleanBuild();
   watch('./src/css/**/*.scss', { delay: 750 }, sass);
-  watch('./src/js/**/*.js', { delay: 750 }, js); // wait 750ms later before running the task js()
+  watch('./src/js/browser_action/**/*.js', { delay: 750 }, browserActionJS); // wait 750ms later before running the task js()
+  watch('./src/js/content_scripts/**/*.js', { delay: 750 }, contentScriptJS);
   watch('./src/static/**/*', copyStatic);
 }
 
@@ -66,7 +84,7 @@ function sassInject(){
 }
 
 function jsInject(){
-  return js().pipe(browserSync.stream());
+  return browserActionJS().pipe(browserSync.stream());
 }
 
 function reloadServer() {
@@ -82,24 +100,23 @@ function browserSyncServer(){
 
   // this in essence takes over watchActivities() because it will also inject the data to the browser using browser-sync
   watch("./src/css/**/*.scss", { delay: 250 }, sassInject); // watch scss changes, then inject the updated new css file to browser without refresh
-  watch("./src/js/**/*.js", { delay: 250 }, jsInject); // watch js changes, then inject new script.min.js
-
+  watch("./src/js/browser_action/**/*.js", { delay: 250 }, jsInject); // watch js changes, then inject new script.min.js
   watch('./src/static/**/*', series(copyStatic, reloadServer)); // this is to force a reload on the browser if any new static content is updated
 }
 // dev (gulp task): start by building the files into ./publish folder then run the server
-const dev = series(clean,parallel(sass, js, copyStatic), browserSyncServer);
+const dev = series(clean,parallel(sass, browserActionJS, copyStatic), browserSyncServer);
 
-const build = series(clean,parallel(sass, js, copyStatic));
+const build = series(clean,parallel(sass, browserActionJS, contentScriptJS, copyStatic));
 
 // special case for use in watchActivities() 
 // added because web-ext runner for Firefox web-extension development needs ./publish/manifest.json to exist to load
 // if you clean while running web-ext, then firefox won't be able to import and setup the Web Extension
 // $ npm run webext
-const noCleanBuild = parallel(sass, js, copyStatic); 
+const noCleanBuild = parallel(sass, browserActionJS, contentScriptJS, copyStatic); 
 
 // this allows you to just run sass in command line
 exports.sass = sass; // $ gulp sass
-exports.js = js; // $ gulp js
+exports.js = browserActionJS; // $ gulp js
 exports.copyStatic = copyStatic; // $ gulp copyStatic
 
 exports.build = build;

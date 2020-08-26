@@ -22,3 +22,13 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.
 
 -- web-ext package
 https://www.npmjs.com/package/web-ext
+
+https://medium.com/@vanessajimenez_85032/chrome-extensions-content-scripts-vs-background-scripts-7bbd01f9dbe6
+
+-- polyfill 
+https://github.com/mozilla/webextension-polyfill
+
+:: important
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts
+https://developer.chrome.com/extensions/background_pages
