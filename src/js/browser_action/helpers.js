@@ -1,4 +1,4 @@
 function onClick(e) {
-  alert('You Clicked Me!!');
+  alert('clicked');
 }
 module.exports.onClick = onClick;

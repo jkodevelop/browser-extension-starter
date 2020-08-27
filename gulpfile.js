@@ -54,6 +54,14 @@ function contentScriptJS(){
     'renameSuffix': '.min'
   });
 }
+function backgroundJS(){
+  return jsTask('./src/js/background/**/*.js','./publish/js',{
+    'mapSource': 'index.js.map',
+    'mapDest': 'background.min.map',
+    'renameBasename': 'background',
+    'renameSuffix': '.min'
+  });
+}
 
 function sass(){
   return src('./src/css/**/*.scss', { allowEmpty: true })
@@ -75,6 +83,13 @@ function watchActivities() {
   watch('./src/js/browser_action/**/*.js', { delay: 750 }, browserActionJS); // wait 750ms later before running the task js()
   watch('./src/js/content_scripts/**/*.js', { delay: 750 }, contentScriptJS);
   watch('./src/static/**/*', copyStatic);
+
+  // option 1: this lets you watch 2+ sets of folder and run the same task
+  watch(['./src/js/background/**/*.js','./src/js/sharedjs/**/*.js'], { delay: 750 }, backgroundJS);
+  // option 2: or use as many watch function as you need running the same tasks
+  // watch('./src/js/background/**/*.js', { delay: 750 }, backgroundJS);
+  // watch('./src/js/sharedjs/**/*.js', { delay: 750 }, backgroundJS);
+  
 }
 
 function sassInject(){
@@ -106,13 +121,13 @@ function browserSyncServer(){
 // dev (gulp task): start by building the files into ./publish folder then run the server
 const dev = series(clean,parallel(sass, browserActionJS, copyStatic), browserSyncServer);
 
-const build = series(clean,parallel(sass, browserActionJS, contentScriptJS, copyStatic));
+const build = series(clean,parallel(sass, browserActionJS, contentScriptJS, backgroundJS, copyStatic));
 
 // special case for use in watchActivities() 
 // added because web-ext runner for Firefox web-extension development needs ./publish/manifest.json to exist to load
 // if you clean while running web-ext, then firefox won't be able to import and setup the Web Extension
 // $ npm run webext
-const noCleanBuild = parallel(sass, browserActionJS, contentScriptJS, copyStatic); 
+const noCleanBuild = parallel(sass, browserActionJS, contentScriptJS, backgroundJS, copyStatic); 
 
 // this allows you to just run sass in command line
 exports.sass = sass; // $ gulp sass
@@ -120,6 +135,7 @@ exports.js = browserActionJS; // $ gulp js
 exports.copyStatic = copyStatic; // $ gulp copyStatic
 
 exports.build = build;
+exports.noCleanBuild = noCleanBuild;
 exports.watchActivities = watchActivities;
 exports.dev = dev;
 

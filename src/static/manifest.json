@@ -26,6 +26,13 @@
     "js": [
       "js/contentscript.min.js"
     ]
-  }]
+  }],
+
+  "background": 
+  { 
+    "scripts": [
+      "js/background.min.js"
+    ]
+  }
   
 }
