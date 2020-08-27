@@ -32,3 +32,12 @@ https://github.com/mozilla/webextension-polyfill
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts
 https://developer.chrome.com/extensions/background_pages
+
+nice examples usage:
+https://viblo.asia/p/chrome-extension-getting-started-djeZ1p8GKWz
+https://viblo.asia/p/chrome-extension-communicating-between-popup-and-content-script-Qbq5QjQXKD8
+
+// send content between background/content_script/browser_action
+https://ask.xiaolee.net/questions/1140496
+https://stackoverflow.com/questions/31111721/pass-a-variable-from-content-script-to-popup/31112456
+https://stackoverflow.com/questions/20019958/chrome-extension-how-to-send-data-from-content-script-to-popup-html

@@ -18,11 +18,12 @@
 
   "permissions": [
     "tabs",
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   
   "content_scripts": [{
-    "matches": ["https://www.google.com/"],
+    "matches": ["https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions"],
     "js": [
       "js/contentscript.min.js"
     ]

@@ -6,7 +6,7 @@ window.browser = (function () {
 })();
 var B = window.browser || browser;
 
-function handleResponse(message) {
+function handleClickResponse(message) {
   document.body.style.border = "5px solid green";
   console.log(`Message from the background script:  ${message.response}`);
 }
@@ -22,7 +22,7 @@ function notifyBackgroundPage(e) {
   // A
   var sending = B.runtime.sendMessage({
     greeting: "Greeting from the content script"
-  },handleResponse);
+  },handleClickResponse);
 
   // this uses promise, only worked for mozilla 2020, chrome didn't allow it
   // B
@@ -30,9 +30,29 @@ function notifyBackgroundPage(e) {
   //   greeting: "Greeting from the content script"
   // });
   // sending.then(handleResponse, handleError);  
-  
 }
 
 window.addEventListener("click", notifyBackgroundPage);
-
 document.body.style.border = "5px solid black";
+
+function handleResponse(message) {
+  console.log(`Message from the background script:  ${message.response}`);
+}
+
+function getH2TextForPopupDisplay(){
+  var matches = document.body.querySelectorAll(".section h2");
+  var h2Texts = [];
+  matches.forEach(function(h2){
+    // console.log(h2.textContent);
+    h2Texts.push(h2.textContent);
+  });
+  console.log('number of matches for .section h2:', matches.length);
+
+  var sending = B.runtime.sendMessage({
+    "dest":"default_popup",
+    "key": "h2",
+    "value": h2Texts
+  },handleResponse);  
+}
+// run when script is injected
+getH2TextForPopupDisplay();
