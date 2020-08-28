@@ -6,6 +6,10 @@ window.browser = (function () {
 })();
 var B = window.browser || browser;
 
+//////////////////////////////////////////////////////////////////////////
+// EXAMPLE 1: onClick on the page, send message to background
+//            background will respond back
+//////////////////////////////////////////////////////////////////////////
 function handleClickResponse(message) {
   document.body.style.border = "5px solid green";
   console.log(`Message from the background script:  ${message.response}`);
@@ -35,6 +39,11 @@ function notifyBackgroundPage(e) {
 window.addEventListener("click", notifyBackgroundPage);
 document.body.style.border = "5px solid black";
 
+
+//////////////////////////////////////////////////////////////////////////
+// EXAMPLE 2: this runs when script loads into matching url then parse the website content 
+//            and send date to background to be saved in localStorage
+//////////////////////////////////////////////////////////////////////////
 function handleResponse(message) {
   console.log(`Message from the background script:  ${message.response}`);
 }
@@ -56,3 +65,14 @@ function getH2TextForPopupDisplay(){
 }
 // run when script is injected
 getH2TextForPopupDisplay();
+
+
+//////////////////////////////////////////////////////////////////////////
+// EXAMPLE 3: this listens to Browser_Action messages, (can do something in dom)
+//            can even communicate information back through function callback
+//////////////////////////////////////////////////////////////////////////
+function gotMessage (message, sender, sendResponse) {
+  console.log("got message from browser action onClick");
+  sendResponse(document.title);
+}
+B.runtime.onMessage.addListener(gotMessage);
