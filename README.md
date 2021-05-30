@@ -1,43 +1,31 @@
-http://zetcode.com/gulp/getting-started/
-https://gulpjs.com/docs/en/getting-started/creating-tasks
-https://www.freecodecamp.org/news/super-simple-gulp-tutorial-for-beginners-45141974bfe8/
-https://css-tricks.com/gulp-for-beginners/
-https://gulpjs.com/docs/en/getting-started/watching-files
+# Browser Extensions starter [2021]
+This is a starter pack for **browser extensions** (aka web-extensions). The purpose of this repo is allow quick start of a  browser extensions with basic manifest setup and scripts, it does not contain all available function of a browser extension project. For more comprehensive example list go to https://github.com/mdn/webextensions-examples. But it does provide a simple guide for the purposes of different context scripts (browser_action/content_script/background). The project also includes a simple step by step guide of **gulp** to streamline and build the project for publishing. 
 
-https://gist.github.com/stsvilik/46bf34f76910fcf515ea00650134190f
+The current state of the code has been tested to work for IE edge/Chrome/Firefox. 
 
-https://www.browsersync.io/docs/gulp
-https://wpbeaches.com/getting-browsersync-running-with-gulp-4-and-valet/
-https://github.com/gulpjs/gulp/blob/master/docs/recipes/minimal-browsersync-setup-with-gulp4.md
+```
 
-:: web extension
--- permissions and url matches
-http://www.adambarth.com/experimental/crx/docs/content_scripts.html
-https://developer.chrome.com/extensions/match_patterns
+Please fork the project to start a new browser extension
 
--- other
-https://developer.chrome.com/extensions/content_scripts
-https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts
-https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts
+```
 
--- web-ext package
-https://www.npmjs.com/package/web-ext
+### prerequisite:
+1. node 12+
+2. firefox
+3. make sure to run `npm install` to install the package
 
-https://medium.com/@vanessajimenez_85032/chrome-extensions-content-scripts-vs-background-scripts-7bbd01f9dbe6
+## usage: Development
+`npm run webext` then web-ext module will load a firefox with the extension loaded. 
 
--- polyfill 
-https://github.com/mozilla/webextension-polyfill
+For development these libraries are used/enabled:
+- web-ext
+- gulp
+- babel
+- sass/scss
+- browser-sync
+- browserify
 
-:: important
-https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension
-https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Content_scripts
-https://developer.chrome.com/extensions/background_pages
+Once the firefox is loaded, changes code in `./src`; it will be watched and updated in the browser. The folder `./publish` is the export of the browser extension. In chrome or IE edge `./publish` can be used for "load unpacked extensions", this is the source code for the final build out browser extensions.
 
-nice examples usage:
-https://viblo.asia/p/chrome-extension-getting-started-djeZ1p8GKWz
-https://viblo.asia/p/chrome-extension-communicating-between-popup-and-content-script-Qbq5QjQXKD8
-
-// send content between background/content_script/browser_action
-https://ask.xiaolee.net/questions/1140496
-https://stackoverflow.com/questions/31111721/pass-a-variable-from-content-script-to-popup/31112456
-https://stackoverflow.com/questions/20019958/chrome-extension-how-to-send-data-from-content-script-to-popup-html
+## Tutorial and Guides
+Please use git history to see the step by step guide for gulp setup to browser extensions setup and examples of different functionalities for browser extensions. `source.md` are sources/referecnes and other tutorials used to build this project.

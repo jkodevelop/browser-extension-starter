@@ -48,23 +48,23 @@ function handleResponse(message) {
   console.log(`Message from the background script:  ${message.response}`);
 }
 
-function getH2TextForPopupDisplay(){
-  var matches = document.body.querySelectorAll(".section h2");
-  var h2Texts = [];
-  matches.forEach(function(h2){
-    // console.log(h2.textContent);
-    h2Texts.push(h2.textContent);
+function getH1TextForPopupDisplay(){
+  var matches = document.body.querySelectorAll("h1");
+  var h1Texts = [];
+  matches.forEach(function(h1){
+    // console.log(h1.textContent);
+    h1Texts.push(h1.textContent);
   });
-  console.log('number of matches for .section h2:', matches.length);
+  console.log('number of matches for h1: ', matches.length);
 
   var sending = B.runtime.sendMessage({
     "dest":"default_popup",
-    "key": "h2",
-    "value": h2Texts
+    "key": "h1",
+    "value": h1Texts
   },handleResponse);  
 }
 // run when script is injected
-getH2TextForPopupDisplay();
+getH1TextForPopupDisplay();
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -33,7 +33,8 @@
   { 
     "scripts": [
       "js/background.min.js"
-    ]
+    ],
+    "persistent": true
   }
   
 }
