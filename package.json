@@ -4,6 +4,7 @@
   "description": "this is tutorial for creating a web-extension with help from gulp",
   "main": "index.js",
   "scripts": {
+    "start": "gulp dev",
     "dev": "gulp dev",
     "watch": "gulp watchActivities",
     "webext": "web-ext run --source-dir=./publish | gulp watchActivities",
