@@ -119,7 +119,7 @@ function browserSyncServer(){
   watch('./src/static/**/*', series(copyStatic, reloadServer)); // this is to force a reload on the browser if any new static content is updated
 }
 // dev (gulp task): start by building the files into ./publish folder then run the server
-const dev = series(clean,parallel(sass, browserActionJS, copyStatic), browserSyncServer);
+const dev = series(clean,parallel(sass, browserActionJS, contentScriptJS, backgroundJS, copyStatic), browserSyncServer);
 
 const build = series(clean,parallel(sass, browserActionJS, contentScriptJS, backgroundJS, copyStatic));
 

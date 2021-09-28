@@ -6,6 +6,7 @@
   "scripts": {
     "start": "gulp dev",
     "dev": "gulp dev",
+    "build": "gulp build",
     "watch": "gulp watchActivities",
     "webext": "web-ext run --source-dir=./publish | gulp watchActivities",
     "webextonly": "web-ext run --source-dir=./publish"
